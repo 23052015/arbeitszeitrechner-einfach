@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Working Hours Calculator</title>
+</head>
+<body>
+    <h1>Working Hours Calculator</h1>
+    <form method="post" action="/">
+        <label for="workers">Number of Workers:</label>
+        <input type="number" name="workers" required>
+        <br>
+        <label for="start_time">Start Time:</label>
+        <input type="time" name="start_time" required>
+        <br>
+        <label for="end_time">End Time:</label>
+        <input type="time" name="end_time" required>
+        <br>
+        <input type="submit" value="Calculate">
+    </form>
+    {% if total_hours %}
+    <h2>Total Working Hours for {{ workers }} workers:</h2>
+    <p>{{ total_hours }} hours</p>
+    {% endif %}
+</body>
+</html>
