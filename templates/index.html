@@ -19,9 +19,11 @@
         <br>
         <input type="submit" value="Calculate">
     </form>
-    {% if total_hours %}
-    <h2>Total Working Hours for {{ workers }} workers:</h2>
-    <p>{{ total_hours }} hours</p>
+    {% if result %}
+    <h2>Summary:</h2>
+    <p>Workers: {{ result['workers'] }}</p>
+    <p>Hours: {{ result['total_hours'] }} hours</p>
+    <p>Break: {{ result['total_break'] }} minutes</p>
     {% endif %}
 </body>
 </html>
