@@ -11,25 +11,27 @@ def calculate_total_hours_and_break(workers, start, end):
     total_time_per_worker = end_time - start_time
 
     # Apply break logic
-    if total_time_per_worker > timedelta(hours=4):  # 4 hours
-        total_time_per_worker += timedelta(minutes=15)
-    if total_time_per_worker > timedelta(hours=8):  # 8 hours
-        total_time_per_worker += timedelta(minutes=30)
+    break_time = timedelta(minutes=0)
+    if total_time_per_worker >= timedelta(hours=4):
+        break_time += timedelta(minutes=15)
+    if total_time_per_worker >= timedelta(hours=8):
+        break_time += timedelta(minutes=15)
+
+        
 
     # Calculate total working time for all workers
     total_time = total_time_per_worker * workers
 
     # Calculate total break time for all workers
-    total_break_time = timedelta(minutes=0)
-    if total_time_per_worker > timedelta(hours=4):  # 4 hours per worker
-        total_break_time += timedelta(minutes=15) * (workers - 1)
-    if total_time_per_worker > timedelta(hours=8):  # 8 hours per worker
-        total_break_time += timedelta(minutes=30) * (workers - 1)
+    total_break_time = break_time * workers
+
+    total_working_time = total_time - total_break_time
 
     return {
         'workers': workers,
         'total_hours': str(total_time),
-        'total_break': str(total_break_time)
+        'total_break': str(total_break_time),
+        'total_working_hours': str(total_working_time)
     }
 
 @app.route('/', methods=['GET', 'POST'])
