@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Working Hours Calculator</h1>
-    <form method="post" action="/">
+    <form method="post" action="/" class="container">
         <label for="workers">Number of Workers:</label>
         <input type="number" name="workers" required>
         <br>
@@ -20,6 +20,7 @@
         <br>
         <input type="submit" value="Calculate">
     </form>
+    <div class="container">
     {% if result %}
     <h2>Summary:</h2>
     <p>Workers: {{ result['workers'] }}</p>
@@ -27,5 +28,6 @@
     <p>Break: {{ result['total_break'] }} minutes</p>
     <p>Working Hours: {{ result['total_working_hours'] }} hours</p>
     {% endif %}
+    </div>
 </body>
 </html>
