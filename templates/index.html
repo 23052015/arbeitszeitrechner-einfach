@@ -1,33 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Working Hours Calculator</title>
 </head>
+
 <body>
     <h1>Working Hours Calculator</h1>
     <form method="post" action="/" class="container">
         <label for="workers">Number of Workers:</label>
         <input type="number" name="workers" required>
         <br>
-        <label for="start_time">Start Time:</label>
+        <label for="total_hours">Start Time:</label>
         <input type="time" name="start_time" required>
         <br>
         <label for="end_time">End Time:</label>
         <input type="time" name="end_time" required>
         <br>
+        <label for="break">Break Time</label>
+        <input type="time" name="break_time" required>
+        <br>
         <input type="submit" value="Calculate">
     </form>
     <div class="container">
-    {% if result %}
-    <h2>Summary:</h2>
-    <p>Workers: {{ result['workers'] }}</p>
-    <p>Hours: {{ result['total_hours'] }} hours</p>
-    <p>Break: {{ result['total_break'] }} minutes</p>
-    <p>Working Hours: {{ result['total_working_hours'] }} hours</p>
-    {% endif %}
+        {% if result %}
+        <h2>Summary:</h2>
+        <p>Workers: {{ result['workers'] }}</p>
+        <p>Total Hours: {{ result['total_hours'] }}</p>
+        <p>Total Break: {{ result['total_break'] }}</p>
+        {% endif %}
     </div>
 </body>
+
 </html>

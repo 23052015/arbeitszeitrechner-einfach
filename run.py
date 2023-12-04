@@ -17,44 +17,33 @@ def round_to_nearest_quarter_hour(dt):
     return dt.replace(minute=rounded_minutes, second=0, microsecond=0)
 
 
-def calculate_total_hours_and_break(workers, start, end):
+def calculate_total_hours_and_break(workers, start, end, breakk):
     start_time = round_to_nearest_quarter_hour(datetime.strptime(start, "%H:%M"))
     end_time = round_to_nearest_quarter_hour(datetime.strptime(end, "%H:%M"))
+    break_time = round_to_nearest_quarter_hour(datetime.strptime(breakk, "%H:%M"))
+
 
     # Calculate total working time for one worker
     total_time_per_worker = end_time - start_time
 
-    # Apply break logic
-    break_time = timedelta(minutes=0)
-    if total_time_per_worker >= timedelta(hours=4):
-        break_time += timedelta(minutes=15)
-    if total_time_per_worker >= timedelta(hours=8):
-        break_time += timedelta(minutes=15)
-
     # Calculate total working time for all workers
     total_time = total_time_per_worker * workers
-
-    # Calculate total break time for all workers
-    total_break_time = break_time * workers
-
-    ## Calculate total working hours for all workers
-    total_working_time = total_time - total_break_time
 
     # Convert total_time to hours and minutes
     total_hours, remainder = divmod(int(total_time.total_seconds()), 3600)
     total_minutes = remainder // 60
 
-    total_hours_1, remainder_1 = divmod(int(total_working_time.total_seconds()), 3600)
-    total_minutes_1 = remainder_1 // 60
+    # Calculate total break time in seconds
+    break_seconds = (break_time - datetime(1900, 1, 1)).total_seconds()
 
-
-
+    # Convert break_time to hours and minutes
+    break_hours, break_remainder = divmod(int(break_seconds), 3600)
+    break_minutes = break_remainder // 60
 
     return {
         'workers': workers,
         'total_hours': f"{total_hours:02}:{total_minutes:02}",
-        'total_break': format_timedelta(total_break_time),
-        'total_working_hours': f"{total_hours_1:02}:{total_minutes_1:02}",
+        'total_break': f"{break_hours:02}:{break_minutes:02}",
     }
 
 @app.route('/', methods=['GET', 'POST'])
@@ -63,9 +52,10 @@ def index():
         workers = int(request.form['workers'])
         start_time = request.form['start_time']
         end_time = request.form['end_time']
+        break_time = request.form['break_time']
 
         # Calculate total hours and break for all workers
-        result = calculate_total_hours_and_break(workers, start_time, end_time)
+        result = calculate_total_hours_and_break(workers, start_time, end_time, break_time)
 
         return render_template('index.html', result=result)
 
